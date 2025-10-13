@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://webshield100-backend.onrender.com/api';
+const API_BASE_URL = 'https://webshieldbackend.onrender.com';
 export const apiCall = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   const config = {
