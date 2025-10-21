@@ -14,24 +14,24 @@ export const apiCall = async (endpoint, options = {}) => {
   const token = localStorage.getItem('webshield_token');
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
-    console.log('✅ Token agregado a la request');
+    console.log(' Token agregado a la request');
   }
 
   try {
-    console.log('📤 Enviando request a:', url); // ← Muestra la URL completa
+    console.log(' Enviando request a:', url); // ← Muestra la URL completa
     const response = await fetch(url, config);
-    console.log('📥 Response status:', response.status);
+    console.log(' Response status:', response.status);
 
     const data = await response.json();
-    console.log('📦 Response data:', data);
+    console.log(' Response data:', data);
 
     if (!response.ok) {
       throw new Error(data.error || `HTTP error! status: ${response.status}`);
     }
     return data;
   } catch (error) {
-    console.error('❌ API Error:', error);
-    console.error('📍 URL que falló:', url); // ← Muestra qué URL falló
+    console.error(' API Error:', error);
+    console.error(' URL que falló:', url); // ← Muestra qué URL falló
     throw error;
   }
 };
@@ -67,7 +67,7 @@ export const projectsAPI = {
   delete: (id) => apiCall(`/projects/${id}`, { method: 'DELETE' }),
 
   save: (id, elements) => {
-    console.log('📝 projectsAPI.save llamado');
+    console.log(' projectsAPI.save llamado');
     console.log('  > ID del proyecto:', id);
     console.log('  > elementos recibidos:', elements);
     console.log('  > tipo de elements:', typeof elements);
@@ -76,23 +76,23 @@ export const projectsAPI = {
 
     // Validación antes de enviar
     if (!id) {
-      console.error('❌ Error: ID del proyecto no proporcionado');
+      console.error(' Error: ID del proyecto no proporcionado');
       throw new Error('ID del proyecto es requerido');
     }
 
     if (!Array.isArray(elements)) {
-      console.error('❌ Error: elements no es un array:', elements);
+      console.error(' Error: elements no es un array:', elements);
       throw new Error('Elements debe ser un array');
     }
 
     // Validar estructura de cada elemento
     const invalidElements = elements.filter((el, index) => {
       if (!el || typeof el !== 'object') {
-        console.error(`❌ Elemento ${index + 1} no es un objeto:`, el);
+        console.error(` Elemento ${index + 1} no es un objeto:`, el);
         return true;
       }
       if (!el.type) {
-        console.error(`❌ Elemento ${index + 1} no tiene tipo:`, el);
+        console.error(` Elemento ${index + 1} no tiene tipo:`, el);
         return true;
       }
       return false;
@@ -108,7 +108,7 @@ export const projectsAPI = {
       settings: el.settings || {}
     }));
 
-    console.log('✅ Elementos limpiados para enviar:', cleanElements);
+    console.log(' Elementos limpiados para enviar:', cleanElements);
 
     return apiCall(`/projects/${id}/save`, {
       method: 'POST',
@@ -125,7 +125,7 @@ export const projectsAPI = {
 
 export const elementsAPI = {
   create: (projectId, elementData) => {
-    console.log('➕ Calling create element for project:', projectId, elementData);
+    console.log(' Calling create element for project:', projectId, elementData);
     return apiCall(`/projects/${projectId}/elements`, {
       method: 'POST',
       body: JSON.stringify(elementData),
@@ -133,7 +133,7 @@ export const elementsAPI = {
   },
 
   update: (id, elementData) => {
-    console.log('✏️ Calling update element:', id, elementData);
+    console.log(' Calling update element:', id, elementData);
     return apiCall(`/elements/${id}`, {
       method: 'PUT',
       body: JSON.stringify(elementData),
@@ -141,7 +141,7 @@ export const elementsAPI = {
   },
 
   delete: (id) => {
-    console.log('🗑️ Calling delete element:', id);
+    console.log(' Calling delete element:', id);
     return apiCall(`/elements/${id}`, {
       method: 'DELETE',
     });
@@ -167,24 +167,24 @@ export const statsAPI = {
 // Utilidades
 export const storage = {
   setToken: (token) => {
-    console.log('💾 Setting token in localStorage');
+    console.log(' Setting token in localStorage');
     localStorage.setItem('webshield_token', token);
   },
 
   getToken: () => {
     const token = localStorage.getItem('webshield_token');
-    console.log('🔑 Getting token from localStorage:', token ? 'Token exists' : 'No token');
+    console.log(' Getting token from localStorage:', token ? 'Token exists' : 'No token');
     return token;
   },
 
   removeToken: () => {
-    console.log('🗑️ Removing token from localStorage');
+    console.log(' Removing token from localStorage');
     localStorage.removeItem('webshield_token');
   },
 
   isLoggedIn: () => {
     const isLoggedIn = !!localStorage.getItem('webshield_token');
-    console.log('🔐 Checking if logged in:', isLoggedIn);
+    console.log(' Checking if logged in:', isLoggedIn);
     return isLoggedIn;
   },
 };
